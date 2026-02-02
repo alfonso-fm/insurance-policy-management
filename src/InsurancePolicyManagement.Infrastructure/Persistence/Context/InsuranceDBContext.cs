@@ -11,7 +11,8 @@ public class InsuranceDBContext: DbContext
 
   public DbSet<Client> Clients => Set<Client>();
   public DbSet<Policy> Policies => Set<Policy>();
-
+  public DbSet<Role> Roles => Set<Role>();
+  public DbSet<User> Users => Set<User>();
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
     modelBuilder.ApplyConfigurationsFromAssembly(typeof(InsuranceDBContext).Assembly);
