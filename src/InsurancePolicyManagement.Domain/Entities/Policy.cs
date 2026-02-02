@@ -9,7 +9,7 @@ public class Policy
   public Guid ClientId { get; private set; }
 
   public PolicyType Type { get; private set; }
-  public PolicyStatus Status { get; private set; }
+  public PolicyStatus Status { get; set; }
 
   public DateTime ValidityStartDate { get; private set; }
   public DateTime ValidityEndDate { get; private set; }
