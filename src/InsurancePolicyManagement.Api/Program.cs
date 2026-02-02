@@ -1,3 +1,4 @@
+using InsurancePolicyManagement.Api.Middleware;
 using InsurancePolicyManagement.Application.Interfaces;
 using InsurancePolicyManagement.Application.Interfaces.Repositories;
 using InsurancePolicyManagement.Infrastructure.Persistence;
@@ -112,7 +113,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -122,3 +123,5 @@ app.MapControllers();
 #endregion
 
 app.Run();
+
+public partial class Program { }
