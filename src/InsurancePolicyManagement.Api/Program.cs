@@ -3,6 +3,7 @@ using InsurancePolicyManagement.Application.Interfaces.Repositories;
 using InsurancePolicyManagement.Infrastructure.Persistence;
 using InsurancePolicyManagement.Infrastructure.Persistence.Context;
 using InsurancePolicyManagement.Infrastructure.Persistence.Repositories;
+using InsurancePolicyManagement.Infrastructure.Persistence.Seed;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,8 +18,8 @@ builder.Services.AddControllers();
 
 #region DbContext
 builder.Services.AddDbContext<InsuranceDBContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<DatabaseSeeder>();
 #endregion
 
 #region Repositories & UoW
@@ -97,6 +98,13 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+#region Seed database
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
+    await seeder.SeedAsync();
+}
+#endregion
 
 #region Middleware pipeline
 if (app.Environment.IsDevelopment())
