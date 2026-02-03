@@ -63,21 +63,18 @@ http://localhost:4200
 
 Demo Credentials
 ADMIN
-Email: admin@insurance.com
-Password: Admin123!
+  - Email: admin@insurance.com
+  - Password: Admin123!
 
 CLIENT
-Email: client@insurance.com
-Password: Client123!
+  - Email: client@insurance.com
+  - Password: Client123!
 
 ## Future Improvements
 
 - Policy lifecycle events with messaging (RabbitMQ)
-
 - Redis caching for policy draft generation
-
 - Audit logging
-
 - UI enhancements
 
 ## Author Notes
