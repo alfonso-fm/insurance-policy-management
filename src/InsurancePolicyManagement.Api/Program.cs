@@ -117,8 +117,9 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 #region Seed database
-using (var scope = app.Services.CreateScope())
+if (!app.Environment.IsEnvironment("Testing"))
 {
+    using var scope = app.Services.CreateScope();
     var seeder = scope.ServiceProvider.GetRequiredService<DatabaseSeeder>();
     await seeder.SeedAsync();
 }
