@@ -104,8 +104,7 @@ builder.Services.AddCors(options =>
     {
         policy
             .WithOrigins(
-                "http://localhost:4200"
-                // luego agregas tu dominio de Angular en producción
+                "https://mango-meadow-0c6e0d810.4.azurestaticapps.net/"
             )
             .AllowAnyHeader()
             .AllowAnyMethod();
