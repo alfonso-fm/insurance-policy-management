@@ -1,0 +1,21 @@
+<h2>My Policies</h2>
+
+<div *ngIf="loading">Loading...</div>
+
+<table *ngIf="!loading && policies.length">
+  <tr>
+    <th>Type</th>
+    <th>Status</th>
+    <th>Amount</th>
+  </tr>
+  <tr *ngFor="let policy of policies">
+    <td>{{ policy.type }}</td>
+    <td>{{ policy.status }}</td>
+    <td>{{ policy.insuredAmount }}</td>
+  </tr>
+</table>
+
+<p *ngIf="!loading && !policies.length">
+  No policies found.
+</p>
+

@@ -1,3 +1,4 @@
+using InsurancePolicyManagement.Application.Security;
 using InsurancePolicyManagement.Domain.Entities;
 using InsurancePolicyManagement.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,8 @@ public class DatabaseSeeder
 
         await SeedRolesAsync();
         await SeedAdminUserAsync();
+        await SeedClientUserAsync();
+        await SeedPoliciesAsync();
 
         _logger.LogInformation("Database seeding completed.");
     }
@@ -74,6 +77,68 @@ public class DatabaseSeeder
 
         _logger.LogInformation("Admin user seeded.");
     }
+
+    private async Task SeedClientUserAsync()
+    {
+        if (await _context.Users.AnyAsync(u => u.Email == "client@insurance.com"))
+            return;
+
+        var clientRole = await _context.Roles.FirstAsync(r => r.Name == "CLIENT");
+
+        var client = new Client
+        {
+            Id = Guid.NewGuid(),
+            Name = "John Doe",
+            Email = "client@insurance.com",
+            Phone = "5551234567",
+            NumericId = "1234567890"
+        };
+
+        var user = new User
+        {
+            Id = Guid.NewGuid(),
+            Email = "client@insurance.com",
+            PasswordHash = PasswordHasher.Hash("Client123!"),
+            RoleId = clientRole.Id,
+            ClientId = client.Id
+        };
+
+        _context.Clients.Add(client);
+        _context.Users.Add(user);
+
+        await _context.SaveChangesAsync();
+    }
+
+    private async Task SeedPoliciesAsync()
+    {
+        var client = await _context.Clients
+            .FirstAsync(c => c.Email == "client@insurance.com");
+
+        if (await _context.Policies.AnyAsync(p => p.ClientId == client.Id))
+            return;
+
+        var policies = new List<Policy>
+        {
+            new Policy(
+                client.Id,
+                Domain.Enums.PolicyType.Auto,
+                DateTime.UtcNow,
+                DateTime.UtcNow.AddYears(1),
+                50000
+            ),
+            new Policy(
+                client.Id,
+                Domain.Enums.PolicyType.Life,
+                DateTime.UtcNow,
+                DateTime.UtcNow.AddYears(1),
+                120000
+            )
+        };
+
+        _context.Policies.AddRange(policies);
+        await _context.SaveChangesAsync();
+    }
+
 
     // ----------------------------
     // Simple password hashing (demo)

@@ -97,6 +97,23 @@ builder.Services.AddSwaggerGen(options =>
 });
 #endregion
 
+#region Controllers
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", policy =>
+    {
+        policy
+            .WithOrigins(
+                "http://localhost:4200"
+                // luego agregas tu dominio de Angular en producción
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
+#endregion
+
 var app = builder.Build();
 
 #region Seed database
@@ -115,6 +132,8 @@ if (app.Environment.IsDevelopment())
 }
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAngularApp");
 
 app.UseAuthentication();
 app.UseAuthorization();
