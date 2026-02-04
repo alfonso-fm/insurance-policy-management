@@ -70,10 +70,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy =>
-        policy.RequireRole("Admin"));
+        policy.RequireRole("ADMIN"));
 
     options.AddPolicy("ClientOnly", policy =>
-        policy.RequireRole("Client"));
+        policy.RequireRole("CLIENT"));
 });
 #endregion
 
@@ -150,6 +150,14 @@ if (!app.Environment.IsEnvironment("Testing"))
 //     app.UseSwaggerUI();
 // }
 
+
+app.UseHttpsRedirection();
+app.UseRouting();
+app.UseCors("AllowAngularApp");
+
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -159,12 +167,6 @@ app.UseSwaggerUI(c =>
 
 
 app.UseMiddleware<ExceptionMiddleware>();
-app.UseHttpsRedirection();
-
-app.UseCors("AllowAngularApp");
-
-app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapControllers();
 #endregion
