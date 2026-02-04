@@ -4,5 +4,6 @@ public record CreateClientRequest(
     string NumericId,
     string Name,
     string Email,
-    string Phone
+    string Phone,
+    string Address
 );

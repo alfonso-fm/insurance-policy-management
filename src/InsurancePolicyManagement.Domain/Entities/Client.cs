@@ -9,7 +9,7 @@ public class Client
   public string Name { get; set; } = "";  
   public string Email { get; set; } = "";
   public string Phone { get; set; } = "";
-  public string? Address { get; set; } = "-";
+  public string Address { get; set; } = "-";
   public Client() { } // EF
 
   public Client(string _numericId, string _name, string _email, string _phone)

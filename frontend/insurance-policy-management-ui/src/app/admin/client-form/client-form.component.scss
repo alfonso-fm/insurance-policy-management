@@ -1,0 +1,72 @@
+/* Contenedor general */
+form {
+  max-width: 420px;
+  margin: 24px auto;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Título */
+h2 {
+  text-align: center;
+  margin-bottom: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Inputs */
+input {
+  padding: 12px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.15);
+}
+
+/* Input inválido */
+input.ng-invalid.ng-touched {
+  border-color: #e53935;
+}
+
+/* Mensajes de error */
+div {
+  font-size: 12px;
+  color: #e53935;
+  margin-top: -10px;
+}
+
+/* Botón */
+button {
+  margin-top: 12px;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  background: #3f51b5;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+button:hover:not(:disabled) {
+  background: #303f9f;
+  transform: translateY(-1px);
+}
+
+/* Botón deshabilitado */
+button:disabled {
+  background: #bdbdbd;
+  cursor: not-allowed;
+}

@@ -40,7 +40,8 @@ public class ClientService : IClientService
             NumericId = c.NumericId,
             Name = c.Name,
             Email = c.Email,
-            Phone = c.Phone
+            Phone = c.Phone,
+            Address = c.Address,
         });
     }
 

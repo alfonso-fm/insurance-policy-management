@@ -5,16 +5,19 @@ import { ClientService } from '../../core/services/client.service';
 
 @Component({
   selector: 'app-client-form',
+  styleUrls: ['./client-form.component.scss'],
   templateUrl: './client-form.component.html'
 })
 export class ClientFormComponent implements OnInit {
   clientId?: string;
+  client?: any;
 
   form = this.fb.group({
     NumericId: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
     Name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]+$/)]],
     email: ['', [Validators.required, Validators.email]],
-    phone: ['', Validators.required]
+    phone: ['', Validators.required],
+    address: ['', Validators.required]
   });
 
   constructor(
@@ -31,11 +34,23 @@ export class ClientFormComponent implements OnInit {
       this.service.getAll().subscribe(clients => {
         const client = clients.find(c => c.id === this.clientId);
         if (client) {
-          this.form.patchValue(client);
+          this.client = client;
+          //this.form.patchValue(client);
+          this.form.patchValue(this.mapClientToForm(client));
           this.form.controls.NumericId.disable();
         }
       });
     }
+  }
+
+  private mapClientToForm(client: any) {
+    return {
+      NumericId: client.numericId,
+      Name: client.name,
+      email: client.email,
+      phone: client.phone,
+      address: client.address
+    };
   }
 
   save() {

@@ -19,6 +19,9 @@
 
   <input placeholder="Phone" formControlName="phone" />
 
+  <input placeholder="Address" formControlName="address" />
+
   <button type="submit" [disabled]="form.invalid">Save</button>
 </form>
+<pre>{{ client | json }}</pre>
 

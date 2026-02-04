@@ -89,7 +89,16 @@ public class ClientRepository : IClientRepository
 
   public Task UpdateAsync(Client client)
   {
+
+      Console.WriteLine( "UPDATE" +
+        JsonSerializer.Serialize(client, new JsonSerializerOptions
+        {
+          WriteIndented = true
+        })
+      );
+
     _context.Clients.Update(client);
+    _context.SaveChangesAsync();
     return Task.CompletedTask;
   }
 
