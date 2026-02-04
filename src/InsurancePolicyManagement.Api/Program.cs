@@ -47,6 +47,20 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)
             )
         };
+        options.Events = new JwtBearerEvents
+        {
+          OnMessageReceived = context =>
+          {
+            var auth = context.Request.Headers["Authorization"].FirstOrDefault();
+              if (string.IsNullOrWhiteSpace(auth) ||
+                  !auth.StartsWith("Bearer ") ||
+                  auth.Count(c => c == '.') != 2)
+              {
+                  context.NoResult();
+              }
+              return Task.CompletedTask;
+          }
+      };
     });
 #endregion
 
@@ -106,8 +120,8 @@ builder.Services.AddCors(options =>
     {
         policy
             .WithOrigins(
-                "https://mango-meadow-0c6e0d810.4.azurestaticapps.net"
-                //"http://localhost:4200"
+                "https://mango-meadow-0c6e0d810.4.azurestaticapps.net",
+                "http://localhost:4200"
             )
             .AllowAnyHeader()
             .AllowAnyMethod();
