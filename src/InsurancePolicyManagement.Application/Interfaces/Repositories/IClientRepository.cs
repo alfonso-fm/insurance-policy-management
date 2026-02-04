@@ -2,7 +2,7 @@ using InsurancePolicyManagement.Domain.Entities;
 
 namespace InsurancePolicyManagement.Application.Interfaces.Repositories;
 
-public interface ICLientRepository
+public interface IClientRepository
 {
   Task<Client?> GetByIdAsync(Guid id);
   Task<Client?> GetByNumberIdAsync(string numberId);

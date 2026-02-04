@@ -1,0 +1,36 @@
+<h2>Clients</h2>
+
+<a routerLink="/admin/clients/new">Create Client</a>
+<br /><br />
+
+<input
+  placeholder="Search clients..."
+  [(ngModel)]="filter"
+/>
+
+<br /><br />
+
+<table class="clients-table">
+  <thead>
+    <tr>
+      <th>Identification</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let client of filteredClients; trackBy: trackById">
+      <td>{{ client.numericId }}</td>
+      <td>{{ client.name }}</td>
+      <td>{{ client.email }}</td>
+      <td>{{ client.phone }}</td>
+      <td>
+        <a [routerLink]="['/admin/clients/edit', client.id]">Edit</a>
+        <button (click)="deleteClient(client.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

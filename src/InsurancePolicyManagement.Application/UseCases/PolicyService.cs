@@ -11,10 +11,10 @@ public class PolicyService : IPolicyService
 {
 
   private readonly IPolicyRepository _policyRepository;
-  private readonly ICLientRepository _clientRepository;
+  private readonly IClientRepository _clientRepository;
   private readonly IUnitOfWork _unitOfWork;
 
-  public PolicyService(IPolicyRepository policyRepository, ICLientRepository clientRepository, IUnitOfWork unitOfWork)
+  public PolicyService(IPolicyRepository policyRepository, IClientRepository clientRepository, IUnitOfWork unitOfWork)
   {
     _policyRepository = policyRepository;
     _clientRepository = clientRepository;

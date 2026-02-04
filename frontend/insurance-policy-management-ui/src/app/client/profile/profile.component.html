@@ -1,0 +1,7 @@
+<h2>My Profile</h2>
+
+<form [formGroup]="form" (ngSubmit)="save()">
+  <input placeholder="Address" formControlName="address" />
+  <input placeholder="Phone" formControlName="phone" />
+  <button type="submit">Save</button>
+</form>

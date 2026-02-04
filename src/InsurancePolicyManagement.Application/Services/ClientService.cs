@@ -1,15 +1,10 @@
-
 using InsurancePolicyManagement.Application.DTOs;
-using InsurancePolicyManagement.Application.Exceptions;
 using InsurancePolicyManagement.Application.Interfaces;
-using InsurancePolicyManagement.Application.Interfaces.Repositories;
 using InsurancePolicyManagement.Domain.Entities;
-
-namespace InsurancePolicyManagement.Application.UseCases;
 
 public class ClientService : IClientService
 {
- private readonly IClientRepository _repository;
+    private readonly IClientRepository _repository;
 
     public ClientService(IClientRepository repository)
     {
@@ -24,13 +19,14 @@ public class ClientService : IClientService
         var client = new Client
         {
             Id = Guid.NewGuid(),
-            NumericId = dto.NumericId,
+            NumericId = dto.NumericId ,
             Name = dto.Name,
             Email = dto.Email,
             Phone = dto.Phone
         };
 
         await _repository.AddAsync(client);
+        
         return client.Id;
     }
 
@@ -53,7 +49,6 @@ public class ClientService : IClientService
         var client = await _repository.GetByIdAsync(id)
             ?? throw new Exception("Client not found");
 
-        
         client.Address = dto.Address;
         client.Phone = dto.Phone;
 

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using InsurancePolicyManagement.Application.Interfaces.Repositories;
 using InsurancePolicyManagement.Domain.Entities;
 using InsurancePolicyManagement.Infrastructure.Persistence.Context;
@@ -5,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InsurancePolicyManagement.Infrastructure.Persistence.Repositories;
 
-public class ClientRepository : ICLientRepository
+public class ClientRepository : IClientRepository
 {
   private readonly InsuranceDBContext _context;
   public ClientRepository(InsuranceDBContext context)
@@ -14,7 +15,14 @@ public class ClientRepository : ICLientRepository
   }
   public async Task AddAsync(Client client)
   {
-     await _context.Clients.AddAsync(client);
+    Console.WriteLine(
+      JsonSerializer.Serialize(client, new JsonSerializerOptions
+      {
+        WriteIndented = true
+      })
+    );
+    await _context.Clients.AddAsync(client);
+    await _context.SaveChangesAsync();
   }
 
   public Task DeleteAsync(Client client)
@@ -28,12 +36,24 @@ public class ClientRepository : ICLientRepository
     return await _context.Clients.AnyAsync(c => c.Id == clientId);
   }
 
-  public async Task<IReadOnlyList<Client>> GetAllAsync()
+  public async Task<bool> ExistsByIdentificationAsync(string identification)
+  {
+    return await _context.Clients.AnyAsync(c => c.NumericId == identification);
+  }
+
+  public async Task<IEnumerable<Client>> GetAllAsync()
   {
     return await _context.Clients
     .AsNoTracking()
     .ToListAsync();
   }
+
+  // public async Task<IEnumerable<Client>> GetAllAsync()
+  // {
+  //   return await _context.Clients
+  //   .AsNoTracking()
+  //   .ToListAsync();
+  // }
 
   public async Task<Client?> GetByIdAsync(Guid id)
   {
@@ -71,5 +91,12 @@ public class ClientRepository : ICLientRepository
   {
     _context.Clients.Update(client);
     return Task.CompletedTask;
+  }
+
+  async Task<IEnumerable<Client>> IClientRepository.GetAllAsync()
+  {
+    return await _context.Clients
+      .AsNoTracking()
+      .ToListAsync();
   }
 }

@@ -1,0 +1,15 @@
+<select [(ngModel)]="selectedType">
+  <option value="">All Types</option>
+  <option value="Life">Life</option>
+  <option value="Auto">Auto</option>
+  <option value="Health">Health</option>
+  <option value="Home">Home</option>
+</select>
+
+<select [(ngModel)]="selectedStatus">
+  <option value="">All Status</option>
+  <option value="Active">Active</option>
+  <option value="Cancelled">Cancelled</option>
+</select>
+
+<tr *ngFor="let policy of filteredPolicies">

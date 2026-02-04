@@ -13,4 +13,24 @@ export class PolicyService {
   getMyPolicies() {
     return this.http.get<any[]>(`${this.api}/my`);
   }
+
+  getAll() {
+    return this.http.get<any[]>(this.api);
+  }
+
+  getById(id: string) {
+    return this.http.get<any>(`${this.api}/${id}`);
+  }
+
+  create(policy: any) {
+    return this.http.post(this.api, policy);
+  }
+
+  update(id: string, policy: any) {
+    return this.http.put(`${this.api}/${id}`, policy);
+  }
+
+  cancel(id: string) {
+    return this.http.delete(`${this.api}/${id}`);
+  }
 }

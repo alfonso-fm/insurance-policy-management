@@ -1,0 +1,38 @@
+<h2>{{ policyId ? 'Edit Policy' : 'New Policy' }}</h2>
+
+<form [formGroup]="form" (ngSubmit)="save()">
+
+  <!-- CLIENT -->
+  <label>Client</label>
+  <select formControlName="clientId">
+    <option value="">Select client</option>
+    <option *ngFor="let c of clients" [value]="c.id">
+      {{ c.Name }} ({{ c.NumericId }})
+    </option>
+  </select>
+
+  <!-- TYPE -->
+  <label>Policy Type</label>
+  <select formControlName="type">
+    <option value="">Select type</option>
+    <option value="Life">Life</option>
+    <option value="Auto">Auto</option>
+    <option value="Health">Health</option>
+    <option value="Home">Home</option>
+  </select>
+
+  <!-- DATES -->
+  <label>Start Date</label>
+  <input type="date" formControlName="startDate" />
+
+  <label>End Date</label>
+  <input type="date" formControlName="endDate" />
+
+  <!-- AMOUNT -->
+  <label>Amount</label>
+  <input type="number" formControlName="amount" />
+
+  <button type="submit" [disabled]="form.invalid">
+    Save
+  </button>
+</form>

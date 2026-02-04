@@ -6,4 +6,6 @@ public interface IClientService
 {
   Task<Guid> CreateClientAsync(CreateClientRequest request);
   Task UpdateClientAsync(Guid clientId, UpdateClientRequest request);
+  Task<IEnumerable<ClientDto>> GetAllAsync();
+  Task DeleteAsync(Guid id);
 }

@@ -24,7 +24,9 @@ builder.Services.AddScoped<DatabaseSeeder>();
 #endregion
 
 #region Repositories & UoW
-builder.Services.AddScoped<ICLientRepository, ClientRepository>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+
 builder.Services.AddScoped<IPolicyRepository, PolicyRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 #endregion
@@ -104,7 +106,8 @@ builder.Services.AddCors(options =>
     {
         policy
             .WithOrigins(
-                "https://mango-meadow-0c6e0d810.4.azurestaticapps.net"
+                //"https://mango-meadow-0c6e0d810.4.azurestaticapps.net"
+                "http://localhost:4200"
             )
             .AllowAnyHeader()
             .AllowAnyMethod();
