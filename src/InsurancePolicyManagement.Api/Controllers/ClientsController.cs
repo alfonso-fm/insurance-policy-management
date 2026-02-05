@@ -1,9 +1,7 @@
 using InsurancePolicyManagement.Application.DTOs;
 using InsurancePolicyManagement.Application.Interfaces;
-using InsurancePolicyManagement.Infrastructure.Persistence.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 [ApiController]
 [Route("api/clients")]
@@ -23,11 +21,11 @@ public class ClientsController : ControllerBase
         => Ok(await _service.GetAllAsync());
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateClientRequest dto)
+    public async Task<IActionResult> Create([FromBody] CreateClientDto dto)
         => Ok(await _service.CreateClientAsync(dto));
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(Guid id, UpdateClientRequest dto)
+    public async Task<IActionResult> Update(Guid id, UpdateClientDto dto)
     {
         await _service.UpdateClientAsync(id, dto);
         return NoContent();

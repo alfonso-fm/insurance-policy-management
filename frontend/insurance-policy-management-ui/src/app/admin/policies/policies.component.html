@@ -1,15 +1,62 @@
-<select [(ngModel)]="selectedType">
-  <option value="">All Types</option>
-  <option value="Life">Life</option>
-  <option value="Auto">Auto</option>
-  <option value="Health">Health</option>
-  <option value="Home">Home</option>
-</select>
+<!-- ====== DEBUG (puedes quitar luego) ====== -->
+<!-- <details style="margin-bottom: 16px;">
+  <summary>Debug policies</summary>
+  <pre>{{ policies | json }}</pre>
+</details> -->
 
-<select [(ngModel)]="selectedStatus">
-  <option value="">All Status</option>
-  <option value="Active">Active</option>
-  <option value="Cancelled">Cancelled</option>
-</select>
+<!-- ====== FILTROS ====== -->
+<div class="filters">
+  <span class="filters-title">Table Filters</span>
 
-<tr *ngFor="let policy of filteredPolicies">
+  <div class="filters-controls">
+    <select [(ngModel)]="selectedType">
+      <option value="">All Types</option>
+      <option value="1">Life</option>
+      <option value="2">Auto</option>
+      <option value="3">Health</option>
+      <option value="4">Home</option>
+    </select>
+
+    <select [(ngModel)]="selectedStatus">
+      <option value="">All Status</option>
+      <option value="1">Active</option>
+      <option value="2">Cancelled</option>
+    </select>
+
+    <button (click)="applyFilters()">Apply</button>
+    <button class="secondary" (click)="clearFilters()">Clear</button>
+  </div>
+</div>
+
+<!-- ====== TABLA ====== -->
+<table class="policies-table" *ngIf="policies.length > 0">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Status</th>
+      <th>Amount</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let policy of filteredPolicies">
+      <td>{{ policyTypes[policy.type] }}</td>
+      <td>{{ policyStatus[policy.status] }}</td>
+      <td>{{ policy.amount | currency }}</td>
+      <td>{{ policy.validityStartDate | date:'shortDate' }}</td>
+      <td>{{ policy.validityEndDate | date:'shortDate' }}</td>
+      <td>
+        <button (click)="editPolicy(policy.id)">Edit</button>
+        <button (click)="cancelPolicy(policy.id)">Cancel</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ====== EMPTY STATE ====== -->
+<div *ngIf="policies.length === 0" class="empty">
+  No policies found
+</div>

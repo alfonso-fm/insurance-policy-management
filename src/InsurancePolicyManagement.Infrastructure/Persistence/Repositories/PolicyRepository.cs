@@ -18,6 +18,7 @@ public class PolicyRepository : IPolicyRepository
   public async Task AddAsync(Policy policy)
   {
     await _context.Policies.AddAsync(policy);
+    _context.SaveChanges();
   }
 
   public async Task<IReadOnlyList<Policy>> FilterAsync(PolicyType? type, PolicyStatus? status, DateTime? validityStartDate, DateTime? validityEndDate)
@@ -49,6 +50,11 @@ public class PolicyRepository : IPolicyRepository
       .ToListAsync();
   }
 
+  public async Task<IReadOnlyList<Policy>> GetAllAsync()
+  {
+    return await _context.Policies.ToListAsync();
+  }
+
   public async Task<IReadOnlyList<Policy>> GetByClientIdAsync(Guid clientId)
   {
     return await _context.Policies
@@ -65,6 +71,7 @@ public class PolicyRepository : IPolicyRepository
   public Task UpdateAsync(Policy policy)
   {
     _context.Policies.Update(policy);
-        return Task.CompletedTask;
+    _context.SaveChanges();
+    return Task.CompletedTask;
   }
 }

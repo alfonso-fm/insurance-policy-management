@@ -1,0 +1,47 @@
+.dashboard {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.dashboard h2 {
+  margin-bottom: 8px;
+  font-size: 26px;
+  color: #333;
+}
+
+.subtitle {
+  margin-bottom: 32px;
+  font-size: 14px;
+  color: #666;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.actions button {
+  min-width: 180px;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: #3f51b5;
+  color: white;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+}
+
+.actions button:hover {
+  background: #303f9f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(63, 81, 181, 0.25);
+}

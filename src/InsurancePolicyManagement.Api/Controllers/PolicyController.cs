@@ -1,4 +1,5 @@
-using InsurancePolicyManagement.Infrastructure.Persistence.Context;
+using InsurancePolicyManagement.Application.DTOs;
+using InsurancePolicyManagement.Application.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,11 +9,10 @@ using Microsoft.EntityFrameworkCore;
 [Authorize]
 public class PoliciesController : ControllerBase
 {
-  private readonly InsuranceDBContext _context;
-
-  public PoliciesController(InsuranceDBContext context)
+  private readonly IPolicyService _service;
+  public PoliciesController(IPolicyService service)
   {
-    _context = context;
+      _service = service;
   }
 
   [HttpGet("my")]
@@ -23,8 +23,28 @@ public class PoliciesController : ControllerBase
     if (string.IsNullOrEmpty(clientId))
       return Forbid();
 
-    return Ok(await _context.Policies
-      .Where(p => p.ClientId == Guid.Parse(clientId))
-      .ToListAsync());
+    return Ok(await _service.GetAllByClientIdAsync(Guid.Parse(clientId)));
+  }
+
+  [HttpGet]
+  public async Task<IActionResult> GetAll()
+    => Ok(await _service.GetAllAsync());
+
+  [HttpPost]
+  public async Task<IActionResult> Create([FromBody] CreatePolicyDto dto)
+    => Ok(await _service.CreatePolicyAsync(dto));
+
+  [HttpPut("{id}")]
+  public async Task<IActionResult> Update(Guid id, UpdatePolicyDto dto)
+  {
+    await _service.UpdatePolicyAsync(id, dto);
+    return NoContent();
+  }
+
+  [HttpDelete("{id}")]
+  public async Task<IActionResult> Delete(Guid id)
+  {
+    await _service.DeletePolicyAsync(id);
+    return NoContent();
   }
 }

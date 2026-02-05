@@ -28,7 +28,9 @@ builder.Services.AddScoped<DatabaseSeeder>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 
+builder.Services.AddScoped<IPolicyService, PolicyService>();
 builder.Services.AddScoped<IPolicyRepository, PolicyRepository>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 #endregion
 

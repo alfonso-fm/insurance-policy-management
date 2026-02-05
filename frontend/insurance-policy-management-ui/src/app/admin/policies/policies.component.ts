@@ -8,12 +8,26 @@ import { PolicyService } from 'src/app/core/services/policy.service';
   styleUrls: ['./policies.component.scss']
 })
 export class PoliciesComponent implements OnInit {
+  policyTypes: Record<number, string> = {
+    1: 'Life',
+    2: 'Auto',
+    3: 'Health',
+    4: 'Home'
+  };
 
+  policyStatus: Record<number, string> = {
+    1: 'Active',
+    2: 'Cancelled'
+  };
   policies: any[] = [];
 
-  // filtros
+  // valores del UI
   selectedType: string = '';
   selectedStatus: string = '';
+
+  // valores aplicados
+  appliedType: string = '';
+  appliedStatus: string = '';
 
   constructor(
     private policyService: PolicyService,
@@ -29,6 +43,19 @@ export class PoliciesComponent implements OnInit {
       next: (data) => this.policies = data,
       error: () => alert('Error loading policies')
     });
+  }
+
+
+  applyFilters(): void {
+    this.appliedType = this.selectedType;
+    this.appliedStatus = this.selectedStatus;
+  }
+
+  clearFilters(): void {
+    this.selectedType = '';
+    this.selectedStatus = '';
+    this.appliedType = '';
+    this.appliedStatus = '';
   }
 
   // navegación
@@ -49,11 +76,11 @@ export class PoliciesComponent implements OnInit {
     });
   }
 
-  // filtro calculado
+
   get filteredPolicies(): any[] {
     return this.policies.filter(p =>
-      (!this.selectedType || p.type === this.selectedType) &&
-      (!this.selectedStatus || p.status === this.selectedStatus)
+      (!this.appliedType || p.type === Number(this.appliedType)) &&
+      (!this.appliedStatus || p.status === Number(this.appliedStatus))
     );
   }
 }

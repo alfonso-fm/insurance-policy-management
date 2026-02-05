@@ -2,7 +2,7 @@ using InsurancePolicyManagement.Domain.Enums;
 
 namespace InsurancePolicyManagement.Application.DTOs;
 
-public record CreatePolicyRequest(
+public record CreatePolicyDto(
     Guid ClientId,
     PolicyType Type,
     DateTime ValidityStartDate,

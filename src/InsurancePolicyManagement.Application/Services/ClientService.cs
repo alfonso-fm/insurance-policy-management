@@ -11,7 +11,7 @@ public class ClientService : IClientService
         _repository = repository;
     }
 
-    public async Task<Guid> CreateClientAsync(CreateClientRequest dto)
+    public async Task<Guid> CreateClientAsync(CreateClientDto dto)
     {
         if (await _repository.ExistsByIdentificationAsync(dto.NumericId))
             throw new Exception("Client already exists");
@@ -45,7 +45,7 @@ public class ClientService : IClientService
         });
     }
 
-    public async Task UpdateClientAsync(Guid id, UpdateClientRequest dto)
+    public async Task UpdateClientAsync(Guid id, UpdateClientDto dto)
     {
         var client = await _repository.GetByIdAsync(id)
             ?? throw new Exception("Client not found");
