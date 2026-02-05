@@ -3,6 +3,7 @@ using InsurancePolicyManagement.Domain.Enums;
 namespace InsurancePolicyManagement.Application.DTOs;
 
 public class PolicyDto{
+    public Guid Id {get; set;}
     public Guid ClientId { get; set; }
     public PolicyType Type { get; set; }
     public DateTime ValidityStartDate{ get; set; }

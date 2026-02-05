@@ -11,4 +11,5 @@ public interface IPolicyService
     Task<IEnumerable<PolicyDto>> GetAllAsync();
     Task DeletePolicyAsync(Guid id);
     Task<IEnumerable<PolicyDto>> GetAllByClientIdAsync(Guid clientGuiId);
+    Task<PolicyDto> GetByIdAsync(Guid Id);
 }

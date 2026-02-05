@@ -12,6 +12,29 @@ public class PolicyService : IPolicyService
       _repository = repository;
   }
 
+  public async Task<PolicyDto> GetByIdAsync(Guid Id)
+  {
+    Console.Write("Llego al servicio!");
+    var policy = await _repository.GetByIdAsync(Id);
+
+    if (policy == null)
+      throw new KeyNotFoundException($"Policy with id {Id} was not found.");
+
+    var dto = new PolicyDto
+    {
+      Id = policy.Id,
+      ClientId = policy.ClientId,
+      Type = policy.Type,
+      ValidityStartDate = policy.ValidityStartDate,
+      ValidityEndDate = policy.ValidityEndDate,
+      Amount = policy.Amount,
+      Status = policy.Status
+    };
+
+    
+    return dto;
+  }
+
   public async Task CancelPolicyAsync(Guid policyId)
   {
     var policy = await _repository.GetByIdAsync(policyId)
@@ -35,11 +58,11 @@ public class PolicyService : IPolicyService
 
   public async Task<IEnumerable<PolicyDto>> GetAllAsync()
   {
-    Console.Write("¡YA LLEGO!");
     var policies = await _repository.GetAllAsync();
 
     var data = policies.Select(c => new PolicyDto
       {
+        Id = c.Id,
         ClientId = c.ClientId,
         Type = c.Type,
         ValidityStartDate = c.ValidityStartDate,
@@ -48,21 +71,12 @@ public class PolicyService : IPolicyService
         Status = c.Status  
       }
     );
-
-        Console.WriteLine( 
-        JsonSerializer.Serialize(data, new JsonSerializerOptions
-        {
-          WriteIndented = true
-        })
-      );
-
-      return data;
+    return data;
   }
 
   public async Task<IEnumerable<PolicyDto>> GetAllByClientIdAsync(Guid clientId)
   {
     var policies = await _repository.GetByClientIdAsync(clientId);
-
     return policies.Select(c => new PolicyDto
       {
         ClientId = c.ClientId,
@@ -75,9 +89,17 @@ public class PolicyService : IPolicyService
     );
   }
 
-  public async Task UpdatePolicyAsync(Guid policyId, UpdatePolicyDto request)
-  {
 
-    //throw new NotImplementedException();
+  public async Task UpdatePolicyAsync(Guid policyId, UpdatePolicyDto dto)
+  {
+    var policy = await _repository.GetByIdAsync(policyId)
+      ?? throw new Exception("Client not found");
+
+    policy.Amount = dto.Amount;
+    policy.Status = (InsurancePolicyManagement.Domain.Enums.PolicyStatus)dto.Status;
+    policy.ValidityStartDate= dto.ValidityStartDate;
+    policy.ValidityEndDate= dto.ValidityEndDate;
+
+    await _repository.UpdateAsync(policy);
   }
 }

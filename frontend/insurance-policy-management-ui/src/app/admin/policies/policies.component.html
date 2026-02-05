@@ -1,8 +1,8 @@
 <!-- ====== DEBUG (puedes quitar luego) ====== -->
-<!-- <details style="margin-bottom: 16px;">
+<details style="margin-bottom: 16px;">
   <summary>Debug policies</summary>
   <pre>{{ policies | json }}</pre>
-</details> -->
+</details>
 
 <!-- ====== FILTROS ====== -->
 <div class="filters">
@@ -40,7 +40,6 @@
       <th>Actions</th>
     </tr>
   </thead>
-
   <tbody>
     <tr *ngFor="let policy of filteredPolicies">
       <td>{{ policyTypes[policy.type] }}</td>

@@ -11,10 +11,10 @@ public class Policy
   public PolicyType Type { get; private set; }
   public PolicyStatus Status { get; set; }
 
-  public DateTime ValidityStartDate { get; private set; }
-  public DateTime ValidityEndDate { get; private set; }
+  public DateTime ValidityStartDate { get; set; }
+  public DateTime ValidityEndDate { get; set; }
 
-  public decimal Amount { get; private set; }
+  public decimal Amount { get; set; }
   protected Policy() { } // EF
   
   public Policy(Guid _clientId, PolicyType _type, DateTime _validityStartDate, DateTime _validityEndDate, decimal _amount)

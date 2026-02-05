@@ -6,18 +6,23 @@ import { ClientService } from '../../core/services/client.service';
 
 @Component({
   selector: 'app-policy-form',
+  styleUrls: ['./policy-form.component.scss'],
   templateUrl: './policy-form.component.html'
 })
 export class PolicyFormComponent implements OnInit {
 
   policyId?: string;
+  isEditMode = false;
+
   clients: any[] = [];
 
   form = this.fb.group({
+    id: [],
+    status: [],
     clientId: ['', Validators.required],
     type: ['', Validators.required],
-    startDate: ['', Validators.required],
-    endDate: ['', Validators.required],
+    validityStartDate: ['', Validators.required],
+    validityEndDate: ['', Validators.required],
     amount: ['', [Validators.required, Validators.min(1)]]
   });
 
@@ -31,36 +36,50 @@ export class PolicyFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.policyId = this.route.snapshot.paramMap.get('id') ?? undefined;
+    this.isEditMode = !!this.policyId;
 
-    // cargar clientes para el combo
+    // cargar clientes
     this.clientService.getAll().subscribe(data => {
-      this.clients = data;
+      this.clients = data ?? [];
     });
 
     // si es edición
-    if (this.policyId) {
+    if (this.isEditMode && this.policyId) {
       this.policyService.getById(this.policyId).subscribe(policy => {
         this.form.patchValue({
           clientId: policy.clientId,
+          id: policy.id,
           type: policy.type,
-          startDate: policy.startDate,
-          endDate: policy.endDate,
-          amount: policy.amount
+          validityStartDate: this.toDateInputValue(policy.validityStartDate),
+          validityEndDate: this.toDateInputValue(policy.validityEndDate),
+          amount: policy.amount,
+          status: policy.status
         });
+
+        // 🔒 Bloquear campos NO editables
+        this.form.get('clientId')?.disable();
+        this.form.get('type')?.disable();
+        this.form.get('id')?.disable();
       });
     }
+  }
+
+  private toDateInputValue(date: string | Date): string {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0];
   }
 
   save(): void {
     if (this.form.invalid) return;
 
-    const request = this.policyId
-      ? this.policyService.update(this.policyId, this.form.value)
-      : this.policyService.create(this.form.value);
+    const payload = this.form.getRawValue(); // incluye campos deshabilitados
+    console.log('PolicyId recibido:', payload);
+    const request = this.isEditMode && this.policyId
+      ? this.policyService.update(this.policyId, payload)
+      : this.policyService.create(payload);
 
     request.subscribe(() => {
       this.router.navigate(['/admin/policies']);
     });
   }
 }
-

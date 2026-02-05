@@ -26,6 +26,10 @@ public class PoliciesController : ControllerBase
     return Ok(await _service.GetAllByClientIdAsync(Guid.Parse(clientId)));
   }
 
+  [HttpGet("{id}")]
+  public async Task<IActionResult> GetById(Guid Id)
+      => Ok(await _service.GetByIdAsync(Id));
+
   [HttpGet]
   public async Task<IActionResult> GetAll()
     => Ok(await _service.GetAllAsync());
