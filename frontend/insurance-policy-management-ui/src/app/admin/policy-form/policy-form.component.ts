@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PolicyService } from '../../core/services/policy.service';
 import { ClientService } from '../../core/services/client.service';
+import { dateRangeValidator } from 'src/app/core/validators/date-range.validator';
 
 @Component({
   selector: 'app-policy-form',
@@ -24,6 +25,9 @@ export class PolicyFormComponent implements OnInit {
     validityStartDate: ['', Validators.required],
     validityEndDate: ['', Validators.required],
     amount: ['', [Validators.required, Validators.min(1)]]
+  },
+  {
+    validators: dateRangeValidator('validityStartDate', 'validityEndDate')
   });
 
   constructor(
@@ -69,11 +73,34 @@ export class PolicyFormComponent implements OnInit {
     return d.toISOString().split('T')[0];
   }
 
+  isInvalid(controlName: string): boolean {
+  const control = this.form.get(controlName);
+  return !!(
+    control &&
+    control.invalid &&
+    (control.touched || this.submitted)
+  );
+}
+submitted = false;
   save(): void {
-    if (this.form.invalid) return;
+    this.submitted = true;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
-    const payload = this.form.getRawValue(); // incluye campos deshabilitados
-    console.log('PolicyId recibido:', payload);
+    //const payload = this.form.getRawValue(); // incluye campos deshabilitados
+    const raw = this.form.getRawValue();
+
+    const payload = {
+      clientId: raw.clientId,
+      type: Number(raw.type),
+      validityStartDate: raw.validityStartDate,
+      validityEndDate: raw.validityEndDate,
+      amount: raw.amount,
+      status: raw.status
+    };
+
     const request = this.isEditMode && this.policyId
       ? this.policyService.update(this.policyId, payload)
       : this.policyService.create(payload);
@@ -81,5 +108,8 @@ export class PolicyFormComponent implements OnInit {
     request.subscribe(() => {
       this.router.navigate(['/admin/policies']);
     });
+  }
+  get isDateRangeInvalid(): boolean {
+    return !!this.form.errors?.['dateRangeInvalid'];
   }
 }

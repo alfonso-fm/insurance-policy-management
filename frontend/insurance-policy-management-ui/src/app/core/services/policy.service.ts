@@ -23,6 +23,7 @@ export class PolicyService {
   }
 
   create(policy: any) {
+    console.log('Llega al Servicio');
     return this.http.post(this.api, policy);
   }
 

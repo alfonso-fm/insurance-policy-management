@@ -1,12 +1,19 @@
 <!-- ====== DEBUG (puedes quitar luego) ====== -->
-<details style="margin-bottom: 16px;">
+<!-- <details style="margin-bottom: 16px;">
   <summary>Debug policies</summary>
   <pre>{{ policies | json }}</pre>
-</details>
+</details> -->
 
 <!-- ====== FILTROS ====== -->
 <div class="filters">
-  <span class="filters-title">Table Filters</span>
+  <div class="filters-header">
+    <span class="filters-title">Table Filters</span>
+
+    <!-- Botón nueva póliza -->
+    <button class="primary" (click)="createPolicy()">
+      + New Policy
+    </button>
+  </div>
 
   <div class="filters-controls">
     <select [(ngModel)]="selectedType">

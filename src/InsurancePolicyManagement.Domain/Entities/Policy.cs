@@ -5,17 +5,17 @@ namespace InsurancePolicyManagement.Domain.Entities;
 
 public class Policy
 {
-  public Guid Id { get; private set; }
-  public Guid ClientId { get; private set; }
+  public Guid Id { get;  set; }
+  public Guid ClientId { get;  set; }
 
-  public PolicyType Type { get; private set; }
+  public PolicyType Type { get;  set; }
   public PolicyStatus Status { get; set; }
 
   public DateTime ValidityStartDate { get; set; }
   public DateTime ValidityEndDate { get; set; }
 
   public decimal Amount { get; set; }
-  protected Policy() { } // EF
+  public Policy() { } // EF
   
   public Policy(Guid _clientId, PolicyType _type, DateTime _validityStartDate, DateTime _validityEndDate, decimal _amount)
   {

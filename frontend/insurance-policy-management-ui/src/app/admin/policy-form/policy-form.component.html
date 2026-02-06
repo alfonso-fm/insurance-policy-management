@@ -26,7 +26,22 @@
 
     <div class="form-group">
       <label>Client</label>
-      <input type="text" formControlName="clientId">
+
+      <select
+        formControlName="clientId"
+        [class.invalid]="isInvalid('clientId')">
+
+        <option value="">Select a client</option>
+
+        <option *ngFor="let client of clients"
+                [value]="client.id">
+          {{ client.name }}
+        </option>
+      </select>
+
+      <small class="error" *ngIf="isInvalid('clientId')">
+        Client is required
+      </small>
     </div>
 
     <div class="form-group">
@@ -38,7 +53,10 @@
       <label>End Date</label>
       <input type="date" formControlName="validityEndDate">
     </div>
-
+    <div class="error"
+        *ngIf="isDateRangeInvalid && form.touched">
+      End date must be greater than start date
+    </div>
     <div class="form-group">
       <label>Amount</label>
       <input type="number" formControlName="amount">

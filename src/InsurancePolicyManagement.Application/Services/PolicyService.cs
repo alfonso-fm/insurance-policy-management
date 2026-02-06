@@ -2,6 +2,7 @@ using System.Text.Json;
 using InsurancePolicyManagement.Application.DTOs;
 using InsurancePolicyManagement.Application.Interfaces;
 using InsurancePolicyManagement.Application.Interfaces.Repositories;
+using InsurancePolicyManagement.Domain.Entities;
 
 public class PolicyService : IPolicyService
 {
@@ -45,10 +46,25 @@ public class PolicyService : IPolicyService
     await _repository.UpdateAsync(policy);
   }
 
-  public async Task<Guid> CreatePolicyAsync(CreatePolicyDto request)
+  public async Task<Guid> CreatePolicyAsync(CreatePolicyDto dto)
   {
-    //throw new NotImplementedException();
-    return new Guid();
+
+    Console.Write("ya llegue!");
+    var client = new Policy
+    {
+      Id = Guid.NewGuid(),
+      Type = dto.Type ,
+      ValidityEndDate = dto.ValidityEndDate,
+      ValidityStartDate = dto.ValidityStartDate,
+      Amount = dto.Amount,
+      Status = InsurancePolicyManagement.Domain.Enums.PolicyStatus.Active,
+      ClientId = dto.ClientId
+
+    };
+
+    await _repository.AddAsync(client);
+
+    return client.Id;
   }
 
   public async Task DeletePolicyAsync(Guid id)

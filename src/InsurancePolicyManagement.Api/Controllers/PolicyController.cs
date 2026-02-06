@@ -36,7 +36,14 @@ public class PoliciesController : ControllerBase
 
   [HttpPost]
   public async Task<IActionResult> Create([FromBody] CreatePolicyDto dto)
-    => Ok(await _service.CreatePolicyAsync(dto));
+  {
+    Console.Write("Llego al Controller");
+    if (!ModelState.IsValid)
+        return BadRequest(ModelState);
+
+    return Ok(await _service.CreatePolicyAsync(dto));
+  }
+    
 
   [HttpPut("{id}")]
   public async Task<IActionResult> Update(Guid id, UpdatePolicyDto dto)
